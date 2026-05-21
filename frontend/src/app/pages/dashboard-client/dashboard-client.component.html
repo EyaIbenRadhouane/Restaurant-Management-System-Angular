@@ -1,0 +1,136 @@
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark px-4 mb-4">
+  <span class="navbar-brand">🍽️ Restaurant</span>
+  <div class="d-flex align-items-center gap-3">
+    
+    <button (click)="vue='menu'" class="btn btn-sm"
+      [class.btn-warning]="vue==='menu'" [class.btn-outline-light]="vue!=='menu'">
+      🍴 Menu
+    </button>
+    <button (click)="vue='commandes'; chargerMesCommandes()" class="btn btn-sm"
+      [class.btn-warning]="vue==='commandes'" [class.btn-outline-light]="vue!=='commandes'">
+      📦 Mes commandes
+    </button>
+    <button (click)="logout()" class="btn btn-sm btn-outline-danger">🚪 Déconnexion</button>
+    <span class="text-white">👤 {{ auth.getUsername() }}</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+  <div *ngIf="erreur"  class="alert alert-danger">{{ erreur }}</div>
+
+  <!-- VUE MENU -->
+  <div *ngIf="vue === 'menu'">
+    <div class="row">
+      <!-- Panier (gauche) -->
+      <div class="col-md-4">
+        <div class="card shadow-sm sticky-top" style="top: 20px;">
+          <div class="card-header bg-warning">
+            <h5 class="mb-0">🛒 Panier ({{ panier.length }} article(s))</h5>
+          </div>
+          <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+            <div *ngIf="panier.length === 0" class="text-muted text-center py-3">
+              Panier vide
+            </div>
+            <ul class="list-group list-group-flush" *ngIf="panier.length > 0">
+              <li *ngFor="let item of panier; let i = index"
+                  class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                <div>
+                  <span class="fw-bold">{{ item.plat.nom }}</span><br>
+                  <small class="text-muted">× {{ item.quantite }}</small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-success fw-bold">{{ item.plat.prix * item.quantite | number:'1.2-2' }} TND</span>
+                  <button (click)="retirerDuPanier(i)" class="btn btn-sm btn-outline-danger">✕</button>
+                </div>
+              </li>
+            </ul>
+            <hr *ngIf="panier.length > 0">
+            <div *ngIf="panier.length > 0" class="text-end fw-bold fs-5 mb-3">
+              💰 Total : {{ total | number:'1.2-2' }} TND
+            </div>
+          </div>
+          <div class="card-footer" *ngIf="panier.length > 0">
+            <button (click)="passerCommande()" class="btn btn-success w-100">
+              📦 Passer la commande
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plats (droite) -->
+      <div class="col-md-8">
+        <!-- Filtre par catégorie -->
+        <div class="mb-4">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5>🍽️ Notre Menu</h5>
+            </div>
+            <div class="col-md-4">
+              <select [(ngModel)]="categorieSelectionnee" (ngModelChange)="filtrer()" class="form-select form-select-sm">
+                <option value="">-- Toutes les catégories --</option>
+                <option *ngFor="let cat of categories" [value]="cat.id || cat._id">
+                  {{ cat.nom }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grille des plats -->
+        <div class="row g-3">
+          <div *ngFor="let plat of platsFiltres" class="col-md-6">
+            <div class="card h-100 shadow-sm overflow-hidden">
+              <div class="ratio ratio-4x3">
+                <img *ngIf="plat.image" [src]="apiUrl + plat.image" alt="{{ plat.nom }}" class="card-img-top" style="object-fit: cover;" />
+                <div *ngIf="!plat.image" class="d-flex justify-content-center align-items-center bg-light text-muted h-100">
+                  <span>Aucune image</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <h6 class="fw-bold">{{ plat.nom }}</h6>
+                <p class="text-muted small">{{ plat.description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-success">{{ plat.prix | number:'1.2-2' }} TND</span>
+                  <button (click)="ajouterAuPanier(plat)" class="btn btn-sm btn-warning">
+                    ➕ Ajouter
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VUE MES COMMANDES -->
+  <div *ngIf="vue === 'commandes'">
+    <h5>📦 Mes Commandes</h5>
+    <div *ngIf="mesCommandes.length === 0" class="text-muted">Aucune commande.</div>
+    <div class="row g-3">
+      <div *ngFor="let cmd of mesCommandes" class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>{{ cmd.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            <span class="badge {{ getBadgeClass(cmd.statut) }}">{{ cmd.statut }}</span>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-1">
+              <li *ngFor="let l of cmd.plats">
+                • {{ l.plat?.nom || '—' }} × {{ l.quantite }}
+              </li>
+            </ul>
+            <div class="text-end fw-bold">💰 {{ cmd.total }} TND</div>
+          </div>
+          <div class="card-footer" *ngIf="cmd.statut === 'en attente'">
+            <button (click)="supprimerCommande(cmd)" class="btn btn-sm btn-outline-danger w-100">
+              🗑️ Supprimer la commande
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-warning">
+        <h4 class="mb-0">➕ Nouvelle Commande</h4>
+      </div>
+      <div class="card-body">
+
+        <div *ngIf="erreur" class="alert alert-danger">{{ erreur }}</div>
+
+        <!-- Client -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">👤 Nom du Client *</label>
+          <input [(ngModel)]="client"
+                 class="form-control"
+                 placeholder="Ex: Mohamed Ali" />
+        </div>
+
+        <!-- Lignes -->
+        <h5>🍽️ Plats commandés</h5>
+
+        <div *ngFor="let ligne of lignes; let i = index"
+             class="row g-2 mb-2 align-items-center border-bottom pb-2">
+
+          <div class="col-md-5">
+            <select class="form-select"
+                    [(ngModel)]="ligne.plat"
+                    (change)="onPlatChange(i, ligne.plat)">
+              <option value="">-- Choisir un plat --</option>
+              <option *ngFor="let p of plats" [value]="getPlatId(p)">
+                {{ p.nom }} — {{ p.prix }} TND
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <input [(ngModel)]="ligne.quantite"
+                   type="number" min="1"
+                   class="form-control"
+                   placeholder="Qté" />
+          </div>
+
+          <div class="col-md-3 text-muted text-center">
+            {{ ligne.quantite * ligne.prixUnitaire }} TND
+          </div>
+
+          <div class="col-md-2">
+            <button (click)="supprimerLigne(i)"
+                    class="btn btn-sm btn-outline-danger w-100"
+                    [disabled]="lignes.length === 1">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+        <button (click)="ajouterLigne()"
+                class="btn btn-outline-secondary btn-sm mb-3">
+          ➕ Ajouter un plat
+        </button>
+
+        <!-- Total -->
+        <div class="alert alert-info text-end fs-5">
+          💰 <strong>Total : {{ total }} TND</strong>
+        </div>
+
+        <!-- Boutons -->
+        <div class="d-flex gap-2">
+          <button (click)="soumettre()"
+                  class="btn btn-warning flex-fill">
+            📦 Passer la commande
+          </button>
+          <a routerLink="/commandes"
+             class="btn btn-outline-secondary flex-fill">
+            ← Annuler
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

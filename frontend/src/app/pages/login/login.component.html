@@ -1,0 +1,76 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
+  <div style="width: 440px">
+
+    <div class="text-center text-white mb-4">
+      <div style="font-size: 3rem">🍽️</div>
+      <h3 class="fw-bold">Restaurant</h3>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-0 rounded-bottom">
+      <div class="card-body p-4">
+
+        <div *ngIf="erreur" class="alert alert-danger py-2">{{ erreur }}</div>
+        <div *ngIf="succes" class="alert alert-success py-2">{{ succes }}</div>
+
+        <div>
+          <div class="d-flex gap-2 mb-3">
+            <button (click)="mode='login'"
+              class="btn btn-sm flex-fill"
+              [class.btn-warning]="mode==='login'"
+              [class.btn-outline-secondary]="mode!=='login'">
+              🔐 Se connecter
+            </button>
+            <button (click)="mode='register'"
+              class="btn btn-sm flex-fill"
+              [class.btn-warning]="mode==='register'"
+              [class.btn-outline-secondary]="mode!=='register'">
+              ✍️ S'inscrire
+            </button>
+          </div>
+
+          <div *ngIf="mode === 'login'">
+            <div class="mb-3">
+              <label class="form-label fw-bold">👤 Nom d'utilisateur</label>
+              <input [(ngModel)]="username" class="form-control"
+                     placeholder="Votre nom..." (keyup.enter)="soumettre()" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-bold">🔒 Mot de passe</label>
+              <input [(ngModel)]="password" type="password" class="form-control"
+                     placeholder="••••••••" (keyup.enter)="soumettre()" />
+            </div>
+            <button (click)="soumettre()" class="btn btn-warning w-100 fw-bold" [disabled]="loading">
+              {{ loading ? '⏳ ...' : '🔐 Se connecter' }}
+            </button>
+          </div>
+
+          <div *ngIf="mode === 'register'">
+            <div class="text-muted small mb-3 text-center">
+              Inscription client uniquement
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">👤 Nom d'utilisateur</label>
+              <input [(ngModel)]="username" class="form-control"
+                     placeholder="Votre nom..." (keyup.enter)="soumettre()" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">🔒 Mot de passe</label>
+              <input [(ngModel)]="password" type="password" class="form-control"
+                     placeholder="••••••••" (keyup.enter)="soumettre()" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-bold">🔒 Confirmer le mot de passe</label>
+              <input [(ngModel)]="confirmPassword" type="password" class="form-control"
+                     placeholder="••••••••" (keyup.enter)="soumettre()" />
+            </div>
+            <button (click)="soumettre()" class="btn btn-warning w-100 fw-bold" [disabled]="loading">
+              {{ loading ? '⏳ ...' : '✍️ S\'inscrire' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

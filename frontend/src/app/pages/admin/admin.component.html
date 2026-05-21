@@ -1,0 +1,15 @@
+<!-- Navbar admin -->
+<nav class="navbar navbar-dark bg-danger px-4 mb-4">
+  <span class="navbar-brand">Dashboard Admin </span>
+  <div class="d-flex align-items-center gap-3">
+    <a routerLink="/admin/plats" class="btn btn-sm btn-outline-light">🍽️ Plats</a>
+    <a routerLink="/admin/categories" class="btn btn-sm btn-outline-light">🏷️ Catégories</a>
+    <a routerLink="/admin/commandes" class="btn btn-sm btn-outline-light">📦 Commandes</a>
+    <button (click)="logout()" class="btn btn-sm btn-outline-warning">🚪 Déconnexion</button>
+     <span class="text-white">👤 {{ auth.getUsername() }}</span>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

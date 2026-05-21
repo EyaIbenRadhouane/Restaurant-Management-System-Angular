@@ -1,0 +1,38 @@
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Angular
+dist/
+.angular/
+.cache/
+
+# Frontend build outputs
+frontend/dist/
+
+# Backend uploads (images)
+backend/uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+.history/

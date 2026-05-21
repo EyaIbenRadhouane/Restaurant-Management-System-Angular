@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>🛒 Liste des Commandes</h2>
+</div>
+
+<div *ngIf="message" class="alert alert-success">{{ message }}</div>
+
+<div *ngIf="commandes.length === 0" class="text-muted text-center mt-4">
+  Aucune commande enregistrée.
+</div>
+
+<div class="row g-3">
+  <div *ngFor="let cmd of commandes" class="col-md-6">
+    <div class="card shadow-sm h-100">
+
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>👤 {{ cmd.client }}</strong>
+        <span class="badge {{ getBadgeClass(cmd.statut) }}">
+          {{ cmd.statut || 'en attente' }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <!-- ✅ cmd.plats (pas cmd.lignes) — structure backend -->
+        <table class="table table-sm mb-2">
+          <thead>
+            <tr>
+              <th>Plat</th>
+              <th>Qté</th>
+              <th>Prix unit.</th>
+              <th>Sous-total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ligne of $any(cmd).plats">
+              <td>{{ getNomPlat(ligne) }}</td>
+              <td>{{ ligne.quantite }}</td>
+              <td>{{ ligne.plat?.prix || '—' }} TND</td>
+              <td>{{ getSousTotal(ligne) }} TND</td>
+            </tr>
+            <tr *ngIf="!$any(cmd).plats || $any(cmd).plats.length === 0">
+              <td colspan="4" class="text-muted text-center">Aucun plat</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="text-end fw-bold">
+          💰 Total : {{ cmd.total }} TND
+        </div>
+      </div>
+
+      <div class="card-footer d-flex justify-content-between align-items-center">
+        <!-- ✅ passe l'objet cmd entier pour récupérer l'id -->
+        <select class="form-select form-select-sm w-auto"
+                [value]="cmd.statut"
+                (change)="changerStatut(cmd, $any($event.target).value)">
+          <option *ngFor="let s of statuts" [value]="s">{{ s }}</option>
+        </select>
+
+        <button (click)="supprimer(cmd)" class="btn btn-sm btn-danger">
+          🗑️ Supprimer
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
