@@ -2,7 +2,7 @@
 
 Une application web complète pour la gestion d'un restaurant, développée avec Angular (frontend) et Node.js/Express (backend).
 
-## 📋 Table des Matières
+## Table des Matières
 
 - [Vue d'ensemble](#vue-densemble)
 - [Structure du Projet](#structure-du-projet)
@@ -14,7 +14,7 @@ Une application web complète pour la gestion d'un restaurant, développée avec
 - [API Endpoints](#api-endpoints)
 - [Modèles de Données](#modèles-de-données)
 
-## 🎯 Vue d'ensemble
+## Vue d'ensemble
 
 Ce projet est une plateforme de gestion de restaurant permettant de :
 - Gérer les plats et catégories
@@ -24,7 +24,7 @@ Ce projet est une plateforme de gestion de restaurant permettant de :
 - Dashboard administrateur
 - Interface client pour passer des commandes
 
-## 📁 Structure du Projet
+## Structure du Projet
 
 ```
 projet-angular/
@@ -55,7 +55,7 @@ projet-angular/
 └── README.md              # Ce fichier
 ```
 
-## 📦 Prérequis
+## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé :
 - **Node.js** >= 18.x
@@ -67,7 +67,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 ![alt text](image.png)
 
 ![alt text](image-1.png)
-## 🚀 Installation
+## Installation
 
 ### 1. Cloner le repository
 ```bash
@@ -96,7 +96,7 @@ cd ../frontend
 npm install
 ```
 
-## 🎬 Démarrage
+## Démarrage
 
 ### Backend
 ```bash
@@ -123,7 +123,7 @@ cd backend
 npm run seed
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ### Backend (Express.js)
 - **Controllers** : Gèrent la logique métier
@@ -138,7 +138,7 @@ npm run seed
 - **Guards** : Protection des routes
 - **Models** : Interfaces TypeScript
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 ### Authentification
 - Inscription/Connexion utilisateur
@@ -161,7 +161,7 @@ npm run seed
 - Création/modification des catégories
 - Filtrage par catégorie
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Authentification
 - `POST /api/auth/login` - Connexion
@@ -187,7 +187,7 @@ npm run seed
 - `PUT /api/commandes/:id` - Modifier une commande
 - `DELETE /api/commandes/:id` - Supprimer une commande
 
-## 📊 Modèles de Données
+## Modèles de Données
 
 ### User (Utilisateur)
 ```typescript
@@ -242,13 +242,13 @@ npm run seed
 }
 ```
 
-## 🔐 Sécurité
+## Sécurité
 
 - Authentification JWT
 - Passwords hashés (bcrypt)
 - Validation des entrées
 - CORS configuré
 - Protection des routes admin
-## 👤 Auteur
+## Auteur
 
 Eya Iben Radhouane 
